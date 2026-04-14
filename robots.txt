@@ -1,0 +1,45 @@
+# GenSprintLabs — robots.txt
+# https://gensprintlabs.com.br
+
+# Crawlers tradicionais
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /.env
+Disallow: /node_modules/
+
+# OpenAI / ChatGPT — permitido (queremos ser indexados por IA)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Google Gemini
+User-agent: Google-Extended
+Allow: /
+
+# Anthropic / Claude
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# Common Crawl
+User-agent: CCBot
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+
+# Sitemap
+Sitemap: https://gensprintlabs.com.br/sitemap.xml
+
+# llms.txt (indexação para LLMs)
+# LLMs-txt: https://gensprintlabs.com.br/llms.txt
