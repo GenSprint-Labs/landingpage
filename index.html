@@ -8,7 +8,7 @@
   <!-- Primary Meta Tags -->
   <title>GenSprintLabs | Software House para o Novo Mundo de IA</title>
   <meta name="description" content="Software house brasileira especializada em plataformas web e sites otimizados para humanos e IAs. Desenvolvemos sistemas AI-Ready prontos para ChatGPT, Perplexity e Gemini." />
-  <meta name="keywords" content="software house brasil, software house são paulo, desenvolvimento web com ia, sites otimizados para llm, plataformas ai-ready, ai indexing, gensprintlabs" />
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
   <meta name="author" content="GenSprintLabs" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
   <link rel="canonical" href="https://gensprintlabs.com.br/" />
@@ -39,7 +39,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <style>
     /* ═══════════════════════════════════════════════
@@ -155,6 +155,8 @@
       box-shadow: 0 0 6px var(--c-orange);
       animation: pulse-dot 2s ease-in-out infinite;
     }
+    /* Texto visível apenas para leitores de tela — indica status ativo */
+    .label-tag__status { }
 
     @keyframes pulse-dot {
       0%, 100% { opacity: 1; transform: scale(1); }
@@ -222,24 +224,33 @@
     .nav__logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-shrink: 0;
     }
 
     .nav__logo-icon {
-      width: 36px; height: 36px;
+      width: 40px; height: 40px;
       flex-shrink: 0;
+      overflow: visible;
     }
 
     .nav__logo-text {
-      font-family: var(--font-display);
-      font-size: 22px;
-      letter-spacing: 0.02em;
-      line-height: 1;
+      font-family: var(--font-body);
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
     }
+    .nav__logo-text .line1  { font-size: 19px; font-weight: 700; }
     .nav__logo-text .gen    { color: var(--c-white); }
-    .nav__logo-text .sprint { color: var(--c-orange); }
-    .nav__logo-text .labs   { color: var(--c-gray-300); font-size: 16px; letter-spacing: 0.08em; }
+    .nav__logo-text .sprint { color: var(--c-orange); font-style: italic; }
+    .nav__logo-text .labs   {
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      color: var(--c-gray-300);
+      text-transform: uppercase;
+      padding-left: 1px;
+    }
 
     /* Nav links */
     .nav__links {
@@ -296,9 +307,8 @@
     .nav__burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .nav__burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); width: 100%; }
 
-    /* Mobile drawer */
+    /* Mobile drawer — controlado pelo atributo hidden (não pelo CSS display) */
     .nav__drawer {
-      display: none;
       position: fixed;
       top: var(--nav-h);
       left: 0; right: 0;
@@ -310,8 +320,9 @@
       flex-direction: column;
       gap: 4px;
       z-index: 99;
+      display: none;
     }
-    .nav__drawer.open { display: flex; }
+    .nav__drawer:not([hidden]) { display: flex; }
     .nav__drawer a {
       font-size: 16px;
       font-weight: 500;
@@ -368,7 +379,7 @@
       gap: 48px;
     }
 
-    .hero__content { max-width: 760px; }
+    .hero__content { max-width: none; }
 
     .hero__eyebrow {
       margin-bottom: 28px;
@@ -377,18 +388,40 @@
 
     .hero__headline {
       font-family: var(--font-display);
-      font-size: clamp(54px, 9vw, 128px);
-      line-height: 0.92;
+      line-height: 1;
       letter-spacing: -0.01em;
       color: var(--c-white);
       margin-bottom: 28px;
       animation: fadeUp 0.8s var(--ease-out-expo) 0.1s both;
     }
 
-    .hero__headline .line-2 {
+    /* Intro label — "SEU SITE" em tom suave */
+    .hero__hl-pre {
       display: block;
-      color: var(--c-orange);
+      font-size: clamp(22px, 3.5vw, 46px);
+      color: var(--c-gray-500);
+      letter-spacing: 0.1em;
+      line-height: 1.2;
     }
+
+    /* Palavra de impacto — "APARECE" dominando a tela */
+    .hero__hl-key {
+      display: block;
+      font-size: clamp(80px, 15vw, 186px);
+      line-height: 0.84;
+      letter-spacing: -0.02em;
+    }
+
+    /* Continuação — "QUANDO ALGUÉM / PERGUNTA À IA?" */
+    .hero__hl-rest {
+      display: block;
+      font-size: clamp(36px, 5.2vw, 68px);
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      margin-top: 6px;
+    }
+
+    .hero__hl-accent { color: var(--c-orange); }
 
     .hero__sub {
       font-size: clamp(15px, 2vw, 18px);
@@ -529,6 +562,8 @@
       min-width: 140px;
       padding: 20px 24px;
       border-right: 1px solid var(--c-border);
+      display: flex;
+      flex-direction: column-reverse; /* valor (dd) aparece visualmente acima do label (dt) */
     }
     .hero__metric:last-child { border-right: none; }
     .hero__metric-value {
@@ -1236,7 +1271,8 @@
     @media (max-width: 768px) {
       .nav__links { display: none; }
       .nav__burger { display: flex; }
-      .hero__headline { font-size: clamp(48px, 14vw, 72px); }
+      .hero__hl-key { font-size: clamp(72px, 20vw, 186px); }
+      .hero__hl-rest { font-size: clamp(30px, 7vw, 68px); }
       .form__row { grid-template-columns: 1fr; }
       .footer__top { grid-template-columns: 1fr; }
       .timeline__track::before { left: 23px; }
@@ -1249,7 +1285,7 @@
     }
 
     @media (min-width: 1024px) {
-      .hero__inner { grid-template-columns: 1fr 1fr; align-items: center; }
+      .hero__inner { grid-template-columns: 1fr 440px; align-items: center; }
       .hero__code-float {
         position: relative;
         top: auto; right: auto;
@@ -1289,6 +1325,19 @@
        SELECTION
     ═══════════════════════════════════════════════ */
     ::selection { background: rgba(245,146,30,0.3); color: var(--c-white); }
+
+    /* Seta customizada no select (substitui aparência nativa removida) */
+    .form select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239d9d97' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+
+    /* Focus outline visível para navegação por teclado no main */
+    main:focus { outline: 2px solid var(--c-orange); outline-offset: -2px; }
+    main:focus:not(:focus-visible) { outline: none; }
 
     /* Screen-reader only */
     .sr-only {
@@ -1504,30 +1553,43 @@
     <div class="container">
       <div class="nav__inner">
 
-        <a href="#" class="nav__logo" aria-label="GenSprintLabs — Página inicial">
-          <!-- Logo icon: brain + circuit + bolt -->
-          <svg class="nav__logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="36" height="36" rx="8" fill="#1c1c1c"/>
-            <!-- Brain shape -->
-            <path d="M10 18 C10 12 14 9 18 9 C22 9 26 12 26 18 C26 22 24 25 22 26 L14 26 C12 25 10 22 10 18Z" stroke="#F5921E" stroke-width="1.2" fill="none"/>
-            <!-- Circuit lines -->
-            <path d="M18 9 L18 6" stroke="#F5921E" stroke-width="1" stroke-linecap="round"/>
-            <path d="M14 26 L14 30" stroke="#F5921E" stroke-width="1" stroke-linecap="round"/>
-            <path d="M22 26 L22 30" stroke="#F5921E" stroke-width="1" stroke-linecap="round"/>
-            <path d="M10 18 L7 18" stroke="#F5921E" stroke-width="1" stroke-linecap="round"/>
-            <path d="M26 18 L29 18" stroke="#F5921E" stroke-width="1" stroke-linecap="round"/>
-            <!-- Circuit dots -->
-            <circle cx="18" cy="6" r="1.5" fill="#F5921E"/>
-            <circle cx="7" cy="18" r="1.5" fill="#F5921E"/>
-            <circle cx="29" cy="18" r="1.5" fill="#F5921E"/>
-            <circle cx="14" cy="30" r="1.5" fill="#F5921E"/>
-            <circle cx="22" cy="30" r="1.5" fill="#F5921E"/>
-            <!-- Lightning bolt inside -->
-            <path d="M19.5 13 L16 19 L18.5 19 L16.5 24 L21 17 L18.5 17 Z" fill="#F5921E"/>
+        <a href="/" class="nav__logo" aria-label="GenSprintLabs — Página inicial">
+          <!-- Logo icon: brain + circuit + bolt (fiel ao logo oficial, adaptado para fundo escuro) -->
+          <svg class="nav__logo-icon" viewBox="-5 -7 50 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Contorno do cérebro -->
+            <path d="M18 2
+                     C24 0, 33 4, 35 12
+                     C39 7, 42 14, 38 19
+                     C43 22, 42 31, 36 34
+                     C39 40, 35 45, 28 45
+                     C25 49, 18 50, 13 46
+                     C8 49, 2 46, 0 40
+                     C-4 36, -3 27, 1 22
+                     C-3 18, -2 9, 3 5
+                     C7 1, 13 1, 18 2Z"
+                  stroke="white" stroke-width="2" stroke-linejoin="round"/>
+            <!-- Convoluções cerebrais (lado esquerdo) -->
+            <path d="M2,16 C-3,13 -4,20 -1,21" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M1,27 C-4,26 -4,33 -1,33" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Nó de circuito — topo -->
+            <line x1="18" y1="2" x2="18" y2="-5" stroke="white" stroke-width="1.4"/>
+            <circle cx="18" cy="-6" r="2.2" fill="white"/>
+            <!-- Nó de circuito — esquerda -->
+            <line x1="1" y1="28" x2="-6" y2="28" stroke="white" stroke-width="1.4"/>
+            <circle cx="-7" cy="28" r="2.2" fill="white"/>
+            <!-- Nó de circuito — baixo-esquerda -->
+            <line x1="13" y1="46" x2="9" y2="53" stroke="white" stroke-width="1.4"/>
+            <circle cx="9" cy="54" r="2.2" fill="white"/>
+            <!-- Nó de circuito — baixo-direita -->
+            <line x1="28" y1="45" x2="32" y2="52" stroke="white" stroke-width="1.4"/>
+            <circle cx="32" cy="53" r="2.2" fill="white"/>
+            <!-- Raio (lightning bolt diagonal) -->
+            <path d="M30 4 L18 22 L23 22 L11 40 L29 21 L24 21 L34 4 Z" fill="white"/>
           </svg>
 
           <span class="nav__logo-text">
-            <span class="gen">Gen</span><span class="sprint">Sprint</span><span class="labs"> LABS</span>
+            <span class="line1"><span class="gen">Gen</span><span class="sprint">Sprint</span></span>
+            <span class="labs">LABS</span>
           </span>
         </a>
 
@@ -1570,14 +1632,13 @@
 
         <div class="hero__content">
           <div class="hero__eyebrow">
-            <span class="label-tag">Software House AI-Ready · São Paulo, Brasil</span>
+            <span class="label-tag"><span class="sr-only">Em operação: </span>Software House AI-Ready · São Paulo, Brasil</span>
           </div>
 
           <h1 class="hero__headline" id="hero-titulo">
-            SEU SITE<br>
-            <span class="line-2 grad-text">APARECE</span><br>
-            QUANDO ALGUÉM<br>
-            <span class="line-2">PERGUNTA À IA?</span>
+            <span class="hero__hl-pre">SEU SITE</span>
+            <span class="hero__hl-key grad-text">APARECE</span>
+            <span class="hero__hl-rest">QUANDO ALGUÉM<br><span class="hero__hl-accent">PERGUNTA À IA?</span></span>
           </h1>
 
           <p class="hero__sub">
@@ -1591,27 +1652,27 @@
               Falar com especialista
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <a href="#portfolio" class="btn-ghost">
+            <a href="#portfolio" class="btn-ghost" aria-label="Ver projetos da GenSprintLabs">
               Ver projetos
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3L13 8L8 13M13 8H3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
 
           <!-- Metrics -->
-          <div class="hero__metrics" style="margin-top: 48px;">
+          <dl class="hero__metrics" style="margin-top: 48px;" aria-label="Números da GenSprintLabs">
             <div class="hero__metric">
-              <div class="hero__metric-value">3+</div>
-              <div class="hero__metric-label">Plataformas no ar</div>
+              <dt class="hero__metric-label">Plataformas no ar</dt>
+              <dd class="hero__metric-value">3+</dd>
             </div>
             <div class="hero__metric">
-              <div class="hero__metric-value">9×</div>
-              <div class="hero__metric-label">Conversão via IA</div>
+              <dt class="hero__metric-label">Conversão via IA</dt>
+              <dd class="hero__metric-value">9×</dd>
             </div>
             <div class="hero__metric" style="border-right: none;">
-              <div class="hero__metric-value">100%</div>
-              <div class="hero__metric-label">Código seu, sem lock-in</div>
+              <dt class="hero__metric-label">Código seu, sem lock-in</dt>
+              <dd class="hero__metric-value">100%</dd>
             </div>
-          </div>
+          </dl>
         </div>
 
         <!-- Floating code card -->
@@ -1683,7 +1744,7 @@
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M9 5v4l3 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
             </div>
             <div>
-              <div class="problem__point-title">Sites invisíveis para IAs</div>
+              <h3 class="problem__point-title">Sites invisíveis para IAs</h3>
               <div class="problem__point-text">A maioria dos sites brasileiros foi construída para o Google de 2018. LLMs não os entendem — e não os recomendam.</div>
             </div>
           </div>
@@ -1692,7 +1753,7 @@
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l2 4 4.5.65-3.25 3.17.77 4.48L9 12.1l-4.02 2.2.77-4.48L2.5 6.65 7 6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
             </div>
             <div>
-              <div class="problem__point-title">Seu concorrente aparece. Você não.</div>
+              <h3 class="problem__point-title">Seu concorrente aparece. Você não.</h3>
               <div class="problem__point-text">Não porque ele é melhor. Mas porque o site dele foi construído para o mundo de hoje — onde IAs navegam, lêem e recomendam.</div>
             </div>
           </div>
@@ -1701,7 +1762,7 @@
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div>
-              <div class="problem__point-title">A janela está se fechando</div>
+              <h3 class="problem__point-title">A janela está se fechando</h3>
               <div class="problem__point-text">Quem construir presença AI-Ready agora sai na frente. Essa vantagem não vai durar para sempre.</div>
             </div>
           </div>
@@ -1848,8 +1909,11 @@
                 <div class="case-metric__label">Industrial · Pirelli, Siemens</div>
               </div>
               <div class="case-metric">
-                <div class="case-metric__value">↗</div>
-                <div class="case-metric__label"><a href="https://brasimek.com.br" target="_blank" rel="noopener noreferrer" style="color:var(--c-orange)">brasimek.com.br<span class="sr-only"> (abre em nova aba)</span></a></div>
+                <div class="case-metric__label">
+                  <a href="https://brasimek.com.br" target="_blank" rel="noopener noreferrer" style="color:var(--c-orange)" aria-label="Visitar site do projeto Brasimek em brasimek.com.br (abre em nova aba)">
+                    brasimek.com.br<span class="sr-only"> (abre em nova aba)</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -1879,8 +1943,11 @@
                 <div class="case-metric__label">Tratamento de superfícies</div>
               </div>
               <div class="case-metric">
-                <div class="case-metric__value">↗</div>
-                <div class="case-metric__label"><a href="https://hipercrom.com.br" target="_blank" rel="noopener noreferrer" style="color:var(--c-orange)">hipercrom.com.br<span class="sr-only"> (abre em nova aba)</span></a></div>
+                <div class="case-metric__label">
+                  <a href="https://hipercrom.com.br" target="_blank" rel="noopener noreferrer" style="color:var(--c-orange)" aria-label="Visitar site do projeto Hipercrom em hipercrom.com.br (abre em nova aba)">
+                    hipercrom.com.br<span class="sr-only"> (abre em nova aba)</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -1910,8 +1977,11 @@
                 <div class="case-metric__label">AWS Serverless + Claude AI</div>
               </div>
               <div class="case-metric">
-                <div class="case-metric__value">↗</div>
-                <div class="case-metric__label"><a href="https://ploxo.com.br" target="_blank" rel="noopener noreferrer" style="color:var(--c-orange)">ploxo.com.br<span class="sr-only"> (abre em nova aba)</span></a></div>
+                <div class="case-metric__label">
+                  <a href="https://ploxo.com.br" target="_blank" rel="noopener noreferrer" style="color:var(--c-orange)" aria-label="Visitar site do projeto Ploxo em ploxo.com.br (abre em nova aba)">
+                    ploxo.com.br<span class="sr-only"> (abre em nova aba)</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -2118,7 +2188,7 @@
             <span itemprop="name">O que é um site AI-Ready?</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </button>
-          <div class="faq__answer" id="faq-a1" role="region" aria-hidden="true" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <div class="faq__answer" id="faq-a1" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
             <div class="faq__answer-inner" itemprop="text">
               Um site AI-Ready é desenvolvido com estrutura semântica, dados estruturados (Schema.org) e conteúdo organizado de forma que LLMs — como ChatGPT, Claude e Gemini — consigam compreender, indexar e utilizar as informações de forma autônoma. É a diferença entre aparecer nas respostas das IAs ou ser invisível para elas.
             </div>
@@ -2130,7 +2200,7 @@
             <span itemprop="name">Já tenho um site. Preciso refazer do zero?</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </button>
-          <div class="faq__answer" id="faq-a2" role="region" aria-hidden="true" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <div class="faq__answer" id="faq-a2" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
             <div class="faq__answer-inner" itemprop="text">
               Não necessariamente. Nosso serviço de AI Retrofit avalia o que você já tem e implementa as camadas que faltam. O resultado pode ser obtido sem reconstruir tudo — mas exige uma auditoria honesta primeiro. Fazemos isso gratuitamente na conversa de diagnóstico.
             </div>
@@ -2142,7 +2212,7 @@
             <span itemprop="name">Quanto tempo leva um projeto?</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </button>
-          <div class="faq__answer" id="faq-a3" role="region" aria-hidden="true" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <div class="faq__answer" id="faq-a3" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
             <div class="faq__answer-inner" itemprop="text">
               Sites institucionais: geralmente entre 3 e 6 semanas. Sistemas e plataformas: entre 2 e 5 meses, dependendo da complexidade. O prazo real é definido na proposta e honrado — não sumimos no meio do projeto.
             </div>
@@ -2154,7 +2224,7 @@
             <span itemprop="name">Vou ficar preso à GenSprintLabs após a entrega?</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </button>
-          <div class="faq__answer" id="faq-a4" role="region" aria-hidden="true" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <div class="faq__answer" id="faq-a4" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
             <div class="faq__answer-inner" itemprop="text">
               Jamais. O código é seu. O domínio é seu. O servidor é seu. Entregamos documentação técnica completa e você pode levar o projeto para qualquer desenvolvedor no futuro. Trabalhar conosco é uma escolha que você renova — não uma prisão.
             </div>
@@ -2166,7 +2236,7 @@
             <span itemprop="name">Como funciona a conversa de diagnóstico gratuita?</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </button>
-          <div class="faq__answer" id="faq-a5" role="region" aria-hidden="true" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <div class="faq__answer" id="faq-a5" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
             <div class="faq__answer-inner" itemprop="text">
               Você manda uma mensagem no WhatsApp ou e-mail. Agendamos uma conversa de 30 minutos no horário que funcionar para você. Você recebe uma proposta personalizada em até 48 horas. Sem pressão, sem scripts de vendas, sem compromisso.
             </div>
@@ -2221,7 +2291,12 @@
           </div>
 
           <div class="contact__right">
-            <form class="form" id="contact-form" novalidate>
+            <form class="form" id="contact-form" novalidate aria-label="Formulário de contato">
+              <!-- Honeypot anti-spam (oculto para humanos, visível para bots) -->
+              <div style="position:absolute;left:-9999px;opacity:0;pointer-events:none;" aria-hidden="true">
+                <label for="f-website">Website (deixe em branco)</label>
+                <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" />
+              </div>
               <div class="form__row">
                 <div class="form__group">
                   <label for="f-name">Nome *</label>
@@ -2256,9 +2331,15 @@
                 <span class="form__error" id="err-desc">Descreva brevemente seu projeto.</span>
               </div>
               <button type="submit" class="form__submit" id="form-submit">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 9h14M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Enviar mensagem
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M2 9h14M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Receber proposta em 48h
               </button>
+              <p style="font-size:12px;color:var(--c-gray-500);margin-top:12px;line-height:1.6;">
+                Ao enviar, você concorda com nossa
+                <a href="#privacidade" style="color:var(--c-orange);text-decoration:underline;">Política de Privacidade</a>.
+                Seus dados são usados apenas para retorno comercial, conforme a
+                <abbr title="Lei Geral de Proteção de Dados">LGPD</abbr> (Lei 13.709/2018).
+              </p>
             </form>
 
             <div class="form__success" id="form-success">
@@ -2287,24 +2368,24 @@
       <div class="footer__top">
 
         <div class="footer__brand">
-          <a href="#" class="nav__logo" aria-label="GenSprintLabs home">
-            <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="36" height="36" rx="8" fill="#1c1c1c"/>
-              <path d="M10 18 C10 12 14 9 18 9 C22 9 26 12 26 18 C26 22 24 25 22 26 L14 26 C12 25 10 22 10 18Z" stroke="#F5921E" stroke-width="1.2" fill="none"/>
-              <path d="M18 9 L18 6" stroke="#F5921E" stroke-width="1" stroke-linecap="round"/>
-              <path d="M14 26 L14 30" stroke="#F5921E" stroke-width="1" stroke-linecap="round"/>
-              <path d="M22 26 L22 30" stroke="#F5921E" stroke-width="1" stroke-linecap="round"/>
-              <path d="M10 18 L7 18" stroke="#F5921E" stroke-width="1" stroke-linecap="round"/>
-              <path d="M26 18 L29 18" stroke="#F5921E" stroke-width="1" stroke-linecap="round"/>
-              <circle cx="18" cy="6" r="1.5" fill="#F5921E"/>
-              <circle cx="7" cy="18" r="1.5" fill="#F5921E"/>
-              <circle cx="29" cy="18" r="1.5" fill="#F5921E"/>
-              <circle cx="14" cy="30" r="1.5" fill="#F5921E"/>
-              <circle cx="22" cy="30" r="1.5" fill="#F5921E"/>
-              <path d="M19.5 13 L16 19 L18.5 19 L16.5 24 L21 17 L18.5 17 Z" fill="#F5921E"/>
+          <a href="/" class="nav__logo" aria-label="GenSprintLabs — Página inicial">
+            <svg class="nav__logo-icon" viewBox="-5 -7 50 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 2 C24 0, 33 4, 35 12 C39 7, 42 14, 38 19 C43 22, 42 31, 36 34 C39 40, 35 45, 28 45 C25 49, 18 50, 13 46 C8 49, 2 46, 0 40 C-4 36, -3 27, 1 22 C-3 18, -2 9, 3 5 C7 1, 13 1, 18 2Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M2,16 C-3,13 -4,20 -1,21" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M1,27 C-4,26 -4,33 -1,33" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="18" y1="2" x2="18" y2="-5" stroke="white" stroke-width="1.4"/>
+              <circle cx="18" cy="-6" r="2.2" fill="white"/>
+              <line x1="1" y1="28" x2="-6" y2="28" stroke="white" stroke-width="1.4"/>
+              <circle cx="-7" cy="28" r="2.2" fill="white"/>
+              <line x1="13" y1="46" x2="9" y2="53" stroke="white" stroke-width="1.4"/>
+              <circle cx="9" cy="54" r="2.2" fill="white"/>
+              <line x1="28" y1="45" x2="32" y2="52" stroke="white" stroke-width="1.4"/>
+              <circle cx="32" cy="53" r="2.2" fill="white"/>
+              <path d="M30 4 L18 22 L23 22 L11 40 L29 21 L24 21 L34 4 Z" fill="white"/>
             </svg>
             <span class="nav__logo-text">
-              <span class="gen">Gen</span><span class="sprint">Sprint</span><span class="labs"> LABS</span>
+              <span class="line1"><span class="gen">Gen</span><span class="sprint">Sprint</span></span>
+              <span class="labs">LABS</span>
             </span>
           </a>
           <p class="footer__brand-text">
@@ -2324,7 +2405,7 @@
 
         <div class="footer__col">
           <div class="footer__col-title">Empresa</div>
-          <ul class="footer__links">
+          <ul class="footer__links" role="list">
             <li><a href="#diferenciais">Sobre nós</a></li>
             <li><a href="#processo">Como trabalhamos</a></li>
             <li><a href="#portfolio">Portfolio</a></li>
@@ -2334,19 +2415,19 @@
 
         <div class="footer__col">
           <div class="footer__col-title">Contato</div>
-          <ul class="footer__links">
-            <li><a href="mailto:contato@gensprintlabs.com.br">E-mail</a></li>
-            <li><a href="https://linkedin.com/company/gensprintlabs" target="_blank" rel="noopener">LinkedIn</a></li>
-            <li><a href="https://github.com/gensprintlabs" target="_blank" rel="noopener">GitHub</a></li>
-            <li><a href="https://wa.me/5511965485574?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20GenSprintLabs." target="_blank" rel="noopener noreferrer">WhatsApp<span class="sr-only"> (abre em nova aba)</span></a></li>
+          <ul class="footer__links" role="list">
+            <li><a href="mailto:contato@gensprintlabs.com.br" aria-label="Enviar e-mail para a GenSprintLabs">E-mail</a></li>
+            <li><a href="https://linkedin.com/company/gensprintlabs" target="_blank" rel="noopener" aria-label="Perfil da GenSprintLabs no LinkedIn (abre em nova aba)">LinkedIn<span class="sr-only"> (abre em nova aba)</span></a></li>
+            <li><a href="https://github.com/gensprintlabs" target="_blank" rel="noopener" aria-label="Repositório da GenSprintLabs no GitHub (abre em nova aba)">GitHub<span class="sr-only"> (abre em nova aba)</span></a></li>
+            <li><a href="https://wa.me/5511965485574?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20GenSprintLabs." target="_blank" rel="noopener noreferrer" aria-label="Conversar com a GenSprintLabs pelo WhatsApp (abre em nova aba)">WhatsApp<span class="sr-only"> (abre em nova aba)</span></a></li>
           </ul>
         </div>
 
       </div>
 
       <div class="footer__bottom">
-        <p class="footer__copy">
-          © 2026 GenSprintLabs. Todos os direitos reservados. · São Paulo, Brasil
+        <p class="footer__copy" id="footer-copy">
+          © <span id="copyright-year"></span> GenSprintLabs. Todos os direitos reservados. · São Paulo, Brasil
         </p>
         <div class="footer__socials">
           <!-- LinkedIn -->
@@ -2406,6 +2487,9 @@
 
   /* ─── HERO CANVAS PARTICLES ──────────────────── */
   (function initParticles() {
+    // Respeita prefers-reduced-motion (acessibilidade)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const canvas = document.getElementById('hero-canvas');
     const ctx    = canvas.getContext('2d');
     let W, H, particles, animFrame;
@@ -2413,6 +2497,8 @@
     function resize() {
       W = canvas.width  = canvas.offsetWidth;
       H = canvas.height = canvas.offsetHeight;
+      // Reinicializa partículas para evitar artefatos visuais no redimensionamento
+      if (particles) particles = Array.from({ length: COUNT }, randomParticle);
     }
 
     const COUNT = Math.min(80, Math.floor(window.innerWidth / 20));
@@ -2425,7 +2511,7 @@
         vy:   (Math.random() - 0.5) * 0.3,
         r:    Math.random() * 1.5 + 0.5,
         alpha: Math.random() * 0.5 + 0.1,
-        kind: Math.random() < 0.3 ? 'node' : 'dot', // 'node' = square, circuit feel
+        kind: Math.random() < 0.3 ? 'node' : 'dot',
       };
     }
 
@@ -2437,7 +2523,6 @@
     function draw() {
       ctx.clearRect(0, 0, W, H);
 
-      // Draw connections first
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const p = particles[i], q = particles[j];
@@ -2455,12 +2540,10 @@
         }
       }
 
-      // Draw particles
       for (const p of particles) {
         ctx.save();
         ctx.globalAlpha = p.alpha;
         if (p.kind === 'node') {
-          // Small square for circuit feel
           ctx.fillStyle = 'rgba(245, 146, 30, 0.7)';
           ctx.fillRect(p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
         } else {
@@ -2471,11 +2554,9 @@
         }
         ctx.restore();
 
-        // Move
         p.x += p.vx;
         p.y += p.vy;
 
-        // Wrap around
         if (p.x < -10) p.x = W + 10;
         if (p.x > W + 10) p.x = -10;
         if (p.y < -10) p.y = H + 10;
@@ -2485,15 +2566,14 @@
       animFrame = requestAnimationFrame(draw);
     }
 
-    // Pause when tab hidden (performance)
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) cancelAnimationFrame(animFrame);
       else draw();
     });
 
-    window.addEventListener('resize', () => {
-      resize();
-    }, { passive: true });
+    window.addEventListener('resize', resize, { passive: true });
+    // Recalcula no giro de tela em mobile
+    window.addEventListener('orientationchange', () => { setTimeout(resize, 100); }, { passive: true });
 
     init();
     draw();
@@ -2533,63 +2613,95 @@
       const err   = document.getElementById(errId);
       input.classList.toggle('error', show);
       err.classList.toggle('show', show);
+      if (show) input.setAttribute('aria-invalid', 'true');
+      else input.removeAttribute('aria-invalid');
     }
 
     function validateEmail(v) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
     }
 
-    form.addEventListener('submit', async (e) => {
+    // Spinner usando manipulação DOM segura (sem innerHTML com dados do usuário)
+    function setSubmitLoading(loading) {
+      submit.disabled = loading;
+      submit.textContent = '';
+      if (loading) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', '18'); svg.setAttribute('height', '18');
+        svg.setAttribute('viewBox', '0 0 18 18'); svg.setAttribute('fill', 'none');
+        svg.setAttribute('aria-hidden', 'true');
+        svg.style.animation = 'spin-anim 1s linear infinite';
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', '9'); circle.setAttribute('cy', '9'); circle.setAttribute('r', '7');
+        circle.setAttribute('stroke', 'currentColor'); circle.setAttribute('stroke-width', '2');
+        circle.setAttribute('stroke-dasharray', '35'); circle.setAttribute('stroke-dashoffset', '10');
+        svg.appendChild(circle);
+        submit.appendChild(svg);
+        submit.appendChild(document.createTextNode(' Enviando...'));
+        if (!document.getElementById('spin-kf')) {
+          const s = document.createElement('style');
+          s.id = 'spin-kf';
+          s.textContent = '@keyframes spin-anim { to { transform: rotate(360deg); } }';
+          document.head.appendChild(s);
+        }
+      } else {
+        submit.textContent = 'Receber proposta em 48h';
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const name  = getVal('f-name');
-      const email = getVal('f-email');
-      const type  = getVal('f-type');
-      const desc  = getVal('f-desc');
+      // Verificação honeypot anti-spam
+      const honeypot = document.getElementById('f-website');
+      if (honeypot && honeypot.value) return;
+
+      const name    = getVal('f-name');
+      const email   = getVal('f-email');
+      const company = getVal('f-company');
+      const type    = getVal('f-type');
+      const desc    = getVal('f-desc');
 
       let valid = true;
 
-      if (!name) { setError('f-name', 'err-name', true); valid = false; }
-      else setError('f-name', 'err-name', false);
+      if (!name)                { setError('f-name',  'err-name',  true); valid = false; }
+      else                        setError('f-name',  'err-name',  false);
 
       if (!validateEmail(email)) { setError('f-email', 'err-email', true); valid = false; }
-      else setError('f-email', 'err-email', false);
+      else                        setError('f-email', 'err-email', false);
 
-      if (!type) { setError('f-type', 'err-type', true); valid = false; }
-      else setError('f-type', 'err-type', false);
+      if (!type)                { setError('f-type',  'err-type',  true); valid = false; }
+      else                        setError('f-type',  'err-type',  false);
 
-      if (desc.length < 10) { setError('f-desc', 'err-desc', true); valid = false; }
-      else setError('f-desc', 'err-desc', false);
+      if (desc.length < 10)     { setError('f-desc',  'err-desc',  true); valid = false; }
+      else                        setError('f-desc',  'err-desc',  false);
 
       if (!valid) return;
 
-      // Simulate submission
-      submit.disabled = true;
-      submit.innerHTML = `
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="animation: spin-anim 1s linear infinite">
-          <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2" stroke-dasharray="35" stroke-dashoffset="10"/>
-        </svg>
-        Enviando...
-      `;
+      setSubmitLoading(true);
 
-      // Inject spin keyframe if not present
-      if (!document.getElementById('spin-kf')) {
-        const s = document.createElement('style');
-        s.id = 'spin-kf';
-        s.textContent = '@keyframes spin-anim { to { transform: rotate(360deg); } }';
-        document.head.appendChild(s);
-      }
+      // Envia dados reais via WhatsApp (sem simulação)
+      const tipoLabel = { site: 'Site Institucional AI-Ready', plataforma: 'Plataforma Web / Sistema', saas: 'Plataforma SaaS', retrofit: 'AI Retrofit', other: 'Outro' };
+      const msg = [
+        'Olá! Vim pelo site e gostaria de uma proposta.',
+        '',
+        `*Nome:* ${name}`,
+        email   ? `*E-mail:* ${email}`           : '',
+        company ? `*Empresa:* ${company}`         : '',
+        type    ? `*Projeto:* ${tipoLabel[type] || type}` : '',
+        desc    ? `*Descrição:* ${desc}`          : '',
+      ].filter(Boolean).join('\n');
 
-      await new Promise(r => setTimeout(r, 1800));
+      const waUrl = `https://wa.me/5511965485574?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
 
       form.style.display = 'none';
       success.classList.add('show');
     });
 
-    // Clear errors on input
     ['f-name','f-email','f-type','f-desc'].forEach(id => {
       const el = document.getElementById(id);
-      el.addEventListener('input', () => el.classList.remove('error'));
+      el.addEventListener('input', () => { el.classList.remove('error'); el.removeAttribute('aria-invalid'); });
     });
   })();
 
@@ -2606,30 +2718,31 @@
     });
   });
 
+  /* ─── COPYRIGHT ANO DINÂMICO ───────────────────── */
+  const yearEl = document.getElementById('copyright-year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
   /* ─── FAQ ACCORDION ───────────────────── */
   document.querySelectorAll('.faq__question').forEach(btn => {
     btn.addEventListener('click', () => {
       const item   = btn.closest('.faq__item');
-      const answer = item.querySelector('.faq__answer');
       const isOpen = item.classList.contains('open');
 
-      // Close all
+      // Fecha todos
       document.querySelectorAll('.faq__item').forEach(i => {
         i.classList.remove('open');
         i.querySelector('.faq__question').setAttribute('aria-expanded', 'false');
-        i.querySelector('.faq__answer').setAttribute('aria-hidden', 'true');
       });
 
-      // Open clicked if it was closed
+      // Abre o clicado se estava fechado
       if (!isOpen) {
         item.classList.add('open');
         btn.setAttribute('aria-expanded', 'true');
-        answer.setAttribute('aria-hidden', 'false');
       }
     });
   });
 
-  /* ─── MOBILE DRAWER (fix hidden attribute) ───────────────────── */
+  /* ─── MOBILE DRAWER ───────────────────── */
   (function() {
     const burger = document.getElementById('burger');
     const drawer = document.getElementById('drawer');
@@ -2637,10 +2750,29 @@
 
     burger.addEventListener('click', () => {
       const isOpen = burger.getAttribute('aria-expanded') === 'true';
-      burger.setAttribute('aria-expanded', String(!isOpen));
-      burger.classList.toggle('open');
-      if (isOpen) { drawer.setAttribute('hidden', ''); }
-      else { drawer.removeAttribute('hidden'); }
+      const willOpen = !isOpen;
+      burger.setAttribute('aria-expanded', String(willOpen));
+      burger.setAttribute('aria-label', willOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+      burger.classList.toggle('open', willOpen);
+      if (willOpen) {
+        drawer.removeAttribute('hidden');
+        drawer.setAttribute('aria-hidden', 'false');
+      } else {
+        drawer.setAttribute('hidden', '');
+        drawer.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Fechar ao clicar fora
+    document.addEventListener('click', (e) => {
+      if (burger.getAttribute('aria-expanded') === 'true' &&
+          !drawer.contains(e.target) && !burger.contains(e.target)) {
+        burger.setAttribute('aria-expanded', 'false');
+        burger.setAttribute('aria-label', 'Abrir menu de navegação');
+        burger.classList.remove('open');
+        drawer.setAttribute('hidden', '');
+        drawer.setAttribute('aria-hidden', 'true');
+      }
     });
   })();
   </script>
@@ -2673,6 +2805,8 @@
         "alternateName": ["GenSprint Labs", "GenSprint"],
         "description": "Software house brasileira especializada no desenvolvimento de plataformas web e sites otimizados para humanos e inteligências artificiais (LLMs). Criamos sistemas pensados para o novo mundo de IA generativa.",
         "url": "https://gensprintlabs.com.br",
+        "foundingDate": "2024",
+        "numberOfEmployees": { "@type": "QuantitativeValue", "value": 2 },
         "logo": { "@type": "ImageObject", "url": "https://gensprintlabs.com.br/assets/logo.png" },
         "address": {
           "@type": "PostalAddress",
@@ -2689,8 +2823,53 @@
             "availableLanguage": { "@type": "Language", "name": "Portuguese", "alternateName": "pt-BR" }
           }
         ],
+        "sameAs": [
+          "https://linkedin.com/company/gensprintlabs"
+        ],
         "knowsAbout": ["Desenvolvimento de Software", "Plataformas Web", "AI-Ready Systems", "LLM Optimization", "Schema.org", "llms.txt", "GEO", "SaaS"],
-        "slogan": "Plataformas web que humanos adoram usar e que IAs recomendam."
+        "slogan": "Plataformas web que humanos adoram usar e que IAs recomendam.",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Serviços GenSprintLabs",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Sites Institucionais AI-Ready",
+                "description": "Sites profissionais com arquitetura semântica e dados estruturados que permitem indexação por motores de busca tradicionais e por LLMs como ChatGPT, Perplexity e Gemini.",
+                "provider": { "@id": "https://gensprintlabs.com.br/#organization" }
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Plataformas Web e Sistemas",
+                "description": "Portais de clientes, sistemas internos, dashboards e integrações com ERPs e APIs. Arquitetura pensada para crescer e ser acessada por agentes de IA.",
+                "provider": { "@id": "https://gensprintlabs.com.br/#organization" }
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Plataformas SaaS",
+                "description": "Transformamos ideias em produto digital com assinantes, pagamentos recorrentes e escala. Arquitetura serverless, autenticação e integração com gateways de pagamento.",
+                "provider": { "@id": "https://gensprintlabs.com.br/#organization" }
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "AI Retrofit",
+                "description": "Auditoria, schema markup, reestruturação semântica e testes de visibilidade em LLMs para sites existentes, sem reconstruir do zero.",
+                "provider": { "@id": "https://gensprintlabs.com.br/#organization" }
+              }
+            }
+          ]
+        }
       },
       {
         "@type": "WebSite",
@@ -2698,7 +2877,42 @@
         "url": "https://gensprintlabs.com.br",
         "name": "GenSprintLabs",
         "publisher": { "@id": "https://gensprintlabs.com.br/#organization" },
-        "inLanguage": "pt-BR"
+        "inLanguage": "pt-BR",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://gensprintlabs.com.br/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "CreativeWork",
+        "@id": "https://brasimek.com.br/#project",
+        "name": "Brasimek — Site Institucional AI-Ready",
+        "description": "Plataforma digital para empresa metalúrgica fundada em 1987, com clientes como Pirelli, Siemens e Bridgestone. Desenvolvida pela GenSprintLabs com AI indexing e schema markup.",
+        "url": "https://brasimek.com.br",
+        "creator": { "@id": "https://gensprintlabs.com.br/#organization" },
+        "genre": "B2B Industrial"
+      },
+      {
+        "@type": "CreativeWork",
+        "@id": "https://hipercrom.com.br/#project",
+        "name": "Hipercrom — Site Institucional",
+        "description": "Site para empresa especializada em cromagem e tratamento de superfícies industriais, com foco em geração de orçamentos online e posicionamento em buscas especializadas.",
+        "url": "https://hipercrom.com.br",
+        "creator": { "@id": "https://gensprintlabs.com.br/#organization" },
+        "genre": "Indústria"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://ploxo.com.br/#project",
+        "name": "Ploxo — Plataforma SaaS",
+        "description": "Plataforma SaaS modular 100% serverless na AWS com integração Amazon Bedrock (Claude). Módulos: finanças pessoais, análise imobiliária com IA e gestão para academias.",
+        "url": "https://ploxo.com.br",
+        "applicationCategory": "BusinessApplication",
+        "creator": { "@id": "https://gensprintlabs.com.br/#organization" }
       },
       {
         "@type": "FAQPage",
