@@ -9,6 +9,7 @@ como ChatGPT, Claude, Gemini e Perplexity, além de agentes de IA autônomos.
 
 ## Serviços
 
+- Modernização de Sites com IA (plataforma proprietária: diagnóstico automatizado de segurança, acessibilidade WCAG e SEO com scores por categoria, geração de versão modernizada preservando conteúdo e marca, relatório técnico em PDF)
 - Sites Institucionais AI-Ready (com Schema.org, llms.txt, SEO técnico e Core Web Vitals)
 - Plataformas Web e Sistemas Customizados (portais, dashboards, integrações com APIs)
 - Plataformas SaaS (serverless, autenticação JWT, pagamentos recorrentes, IA integrada)
@@ -43,6 +44,7 @@ como ChatGPT, Claude, Gemini e Perplexity, além de agentes de IA autônomos.
 
 - [Página inicial](https://gensprintlabs.com.br)
 - [Serviços](https://gensprintlabs.com.br/#servicos)
+- [Modernização com IA](https://gensprintlabs.com.br/#modernizacao)
 - [Projetos](https://gensprintlabs.com.br/#portfolio)
 - [Processo](https://gensprintlabs.com.br/#processo)
 - [Contato](https://gensprintlabs.com.br/#contato)
