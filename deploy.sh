@@ -60,11 +60,16 @@ if [[ "$SKIP_SYNC" == false ]]; then
     --content-type "text/plain" \
     --cache-control "public, max-age=3600"
 
-  # Remove arquivos do S3 que não existem mais localmente
+  # Remove arquivos do S3 que não existem mais localmente.
+  # WHITELIST: só sobe o que é site público — nunca tooling local
+  # (.claude/, .code-review-graph/ etc. já vazaram para o bucket no passado).
   aws s3 sync "$SCRIPT_DIR" "s3://$S3_BUCKET" \
-    --exclude ".git/*" \
-    --exclude "*.md" \
-    --exclude "deploy.sh" \
+    --exclude "*" \
+    --include "index.html" \
+    --include "robots.txt" \
+    --include "sitemap.xml" \
+    --include "llms.txt" \
+    --include "assets/*" \
     --delete
 
   success "Upload concluído"
