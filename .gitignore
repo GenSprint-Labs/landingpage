@@ -1,0 +1,13 @@
+.DS_Store
+node_modules/
+
+# Ferramentas locais: nunca versionar nem publicar
+.claude/settings.local.json
+.code-review-graph/
+CLAUDE.local.md
+
+# Terraform (o lockfile .terraform.lock.hcl É versionado)
+infra/bootstrap/.terraform/
+infra/bootstrap/terraform.tfstate
+infra/bootstrap/terraform.tfstate.backup
+infra/bootstrap/tfplan

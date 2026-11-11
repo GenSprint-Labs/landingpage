@@ -1,0 +1,42 @@
+# Atualizações automáticas de dependências (Dependabot version updates).
+#
+#   - Semanal, segunda 06:00 BRT. Minor/patch agrupados; major sai em PR próprio.
+#   - cooldown de 7 dias: só propõe versão publicada há pelo menos uma semana.
+#   - Sem auto-merge: toda atualização passa por revisão humana.
+#   - O site não tem dependência npm: só actions e o provider do Terraform.
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Sao_Paulo
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 2
+    labels: []
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      actions-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: terraform
+    directory: /infra/bootstrap
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Sao_Paulo
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 2
+    labels: []
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      terraform-providers-minor-patch:
+        update-types: [minor, patch]

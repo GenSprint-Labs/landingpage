@@ -1,0 +1,119 @@
+name: Tests
+
+# CI do repositório: checagens do site (estrutura, links, CSP, contraste), segredos, workflows,
+# script de deploy e Terraform (fmt/validate). Nenhum job usa credencial AWS: o repositório é
+# público e a role de deploy só é assumível pelo environment `production` (deploy.yml).
+#
+# Pins: as actions estão fixadas por SHA de commit (tag no comentário). O Dependabot
+# (.github/dependabot.yml) abre PR de atualização semanal.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancela execuções antigas do mesmo ref quando um novo push chega.
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+# Nenhum job ganha permissão por padrão; cada um declara a sua.
+permissions: {}
+
+jobs:
+  site-checks:
+    name: Site checks (node --test)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Sem dependências npm: nada para instalar nem para cachear.
+      - name: Setup Node.js 22
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+
+      - name: Checagens do site (contraste + testes)
+        run: npm test
+
+  # Versão e checksum fixos de propósito (o Dependabot não cobre binário baixado):
+  # atualizar os dois juntos, aqui e em deploy.yml.
+  secrets:
+    name: gitleaks (segredos no histórico)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Instalar gitleaks (binário verificado por checksum)
+        run: |
+          set -euo pipefail
+          V=8.30.1
+          curl -sSfL -o "$RUNNER_TEMP/gitleaks.tgz" "https://github.com/gitleaks/gitleaks/releases/download/v${V}/gitleaks_${V}_linux_x64.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tgz" | sha256sum -c -
+          tar -C "$RUNNER_TEMP" -xzf "$RUNNER_TEMP/gitleaks.tgz" gitleaks
+
+      - name: gitleaks git (histórico completo)
+        run: '"$RUNNER_TEMP/gitleaks" git . --no-banner -v --redact --exit-code 1'
+
+  # actionlint (sintaxe e expressões), zizmor (token persistido, injeção por expressão,
+  # actions sem pin, permissões excessivas) e shellcheck (só erro) sobre os scripts.
+  workflows:
+    name: Workflows e scripts (actionlint, zizmor, shellcheck)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: actionlint
+        run: pipx run --spec actionlint-py==1.7.12.25 actionlint .github/workflows/*.yml
+
+      - name: zizmor
+        run: pipx run --spec zizmor==1.32.0 zizmor --no-progress --min-severity medium .github/workflows
+
+      - name: shellcheck (só erro)
+        run: shellcheck -S error infra/scripts/*.sh scripts/*.sh
+
+  terraform:
+    name: Terraform fmt e validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: '~1.9'
+          terraform_wrapper: false
+
+      - name: terraform fmt
+        run: terraform -chdir=infra/bootstrap fmt -check -diff
+
+      - name: terraform validate
+        run: |
+          terraform -chdir=infra/bootstrap init -backend=false -input=false
+          terraform -chdir=infra/bootstrap validate

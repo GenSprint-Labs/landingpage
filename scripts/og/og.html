@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<title>og-image</title>
+<link rel="stylesheet" href="../../site/css/base.css" />
+<style>
+  html { font-size: 16px; }
+  body { width: 1200px; height: 630px; min-height: 0; overflow: hidden; position: relative; background: var(--gs-bg);
+    background-image: repeating-linear-gradient(to bottom, transparent 0 51px, var(--gs-border) 51px 52px); }
+  .pad { position: absolute; inset: 0; padding: 64px 72px; display: flex; flex-direction: column; justify-content: space-between; }
+  h1 { font-size: 104px; font-weight: 800; letter-spacing: -0.045em; line-height: 0.96; isolation: isolate; }
+  mark { position: relative; background: none; color: var(--gs-marker-ink); padding: 0 6px; }
+  mark::before { content: ''; position: absolute; z-index: -1; inset: 10px -6px 2px; background: var(--gs-marker); border-radius: 10px 28px 16px 24px; transform: rotate(-1.2deg); }
+  .foot { display: flex; align-items: center; justify-content: space-between; font-family: var(--gs-font-mono); font-size: 24px; color: var(--gs-text-secondary); }
+  .logo { height: 76px; }
+  .r { display: flex; align-items: center; gap: 14px; font-family: var(--gs-font-heading); font-weight: 800; font-size: 34px; color: var(--gs-text); letter-spacing: -0.03em; }
+  .rm { position: relative; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: #0c1310; color: #e8f0eb; font-size: 30px; }
+  .rm::after { content: ''; position: absolute; left: 10px; right: 10px; bottom: 9px; height: 4px; border-radius: 2px; background: var(--gs-marker); }
+</style>
+</head>
+<body>
+  <div class="pad">
+    <img class="logo" src="../../site/assets/logo.svg" alt="" style="align-self:flex-start" />
+    <h1>Seu site envelheceu.<br />A gente <mark>refaz</mark> em dias.</h1>
+    <div class="foot"><span>gensprint.com.br</span><span class="r"><span class="rm">R</span>RefactorAI</span></div>
+  </div>
+</body>
+</html>
