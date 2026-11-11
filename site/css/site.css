@@ -1030,3 +1030,44 @@ html.js .case[data-reveal].is-in:hover,
   .ticker__track { animation: none; }
   .ticker { overflow-x: auto; }
 }
+
+/* ----------------------------------------
+   PÁGINA 404 (site/404.html, sem site.js)
+   ---------------------------------------- */
+.notfound {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--gs-space-3);
+  padding-block: var(--gs-space-6);
+}
+.notfound__brand {
+  font-family: var(--gs-font-heading);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--gs-text);
+  text-decoration: none;
+}
+.notfound__brand:hover { color: var(--gs-accent); }
+.notfound__code {
+  font-family: var(--gs-font-mono);
+  font-size: var(--gs-fs-sm);
+  letter-spacing: 0.04em;
+  color: var(--gs-accent);
+  margin-top: var(--gs-space-5);
+}
+.notfound__title {
+  font-size: clamp(2.4rem, 7vw, 4.75rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+.notfound__text { max-width: 46ch; font-size: var(--gs-fs-lg); color: var(--gs-text-secondary); }
+.notfound__actions { display: flex; flex-wrap: wrap; gap: var(--gs-space-2); margin-top: var(--gs-space-3); }
+.notfound__actions .btn { margin-top: 0; }
+
+/* Sem site.js não há classe de entrada: o marca-texto já nasce passado (legível sem depender de animação). */
+html.js .notfound mark { color: var(--gs-marker-ink); transition: none; }
+html.js .notfound mark::before { transform: rotate(-1.2deg) scaleX(1); transition: none; }

@@ -35,7 +35,7 @@ test('toda extensão em site/ está na whitelist do deploy', () => {
 });
 
 test('arquivos obrigatórios existem', () => {
-  for (const f of ['index.html', 'robots.txt', 'sitemap.xml', 'llms.txt', 'assets/logo.svg',
+  for (const f of ['index.html', '404.html', 'robots.txt', 'sitemap.xml', 'llms.txt', 'assets/logo.svg',
     'assets/favicon.svg', 'assets/og-image.png', 'css/base.css', 'css/site.css', 'js/site.js', 'js/theme-init.js']) {
     assert.ok(files.includes(f), `falta site/${f}`);
   }
@@ -158,4 +158,25 @@ test('og-image é um PNG 1200x630', () => {
   assert.equal(buf.subarray(1, 4).toString(), 'PNG');
   assert.equal(buf.readUInt32BE(16), 1200);
   assert.equal(buf.readUInt32BE(20), 630);
+});
+
+test('página 404: mesma CSP, fora do índice, sem inline e sem referência quebrada', () => {
+  const nf = read('404.html');
+  const csp = (doc) => doc.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)[1];
+  assert.equal(csp(nf), csp(html), 'CSP da 404 difere da página inicial');
+  assert.match(nf, /<meta name="robots" content="noindex"/);
+  assert.equal((nf.match(/<h1\b/g) || []).length, 1);
+  assert.match(nf, /<html lang="pt-BR">/);
+  assert.doesNotMatch(nf, /\sstyle="|<style\b|\son[a-z]+="/);
+  for (const m of nf.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
+    assert.ok(/\ssrc="\//.test(m[1]) && !m[2].trim(), 'script inline na 404');
+  }
+  // Servida para qualquer caminho: toda referência local precisa ser absoluta.
+  const refs = [...nf.matchAll(/\s(?:href|src)="([^"]*)"/g)].map((m) => m[1]);
+  for (const u of refs) {
+    if (/^https:\/\//.test(u)) continue;
+    assert.ok(u.startsWith('/'), `referência relativa na 404: ${u}`);
+    if (u !== '/') assert.ok(fs.existsSync(path.join(SITE, u)), `referência quebrada na 404: ${u}`);
+  }
+  for (const a of nf.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)) assert.match(a[0], /rel="noopener"/);
 });
