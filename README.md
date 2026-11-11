@@ -32,6 +32,8 @@ bash infra/scripts/deploy.sh
 
 ## Ativar o deploy pelo Actions
 
+**Ativado em 2026-11-11**: role aplicada, variável `AWS_DEPLOY_ROLE_ARN` gravada e environment `production` restrito a `main`. Merge em `main` publica. O roteiro abaixo fica como referência para recriar do zero.
+
 Uma vez só, com o perfil AWS do dono. Cria a role `GenSprintLandingGitHubDeployRole` (2 recursos: role e policy mínima) e aponta o repositório para ela. Enquanto a variável não existir, o job de deploy é pulado.
 
 ```bash
