@@ -94,7 +94,7 @@ resource "aws_cloudfront_distribution" "site" {
   origin {
     origin_id                = local.site_origin_id
     domain_name              = "${var.site_bucket_name}.s3.us-east-1.amazonaws.com"
-    origin_access_control_id = "E2YGPLLJONHQIP"
+    origin_access_control_id = "E2YGPLLJONHQIP" # gitleaks:allow (ID de recurso, não segredo)
   }
 
   default_cache_behavior {
