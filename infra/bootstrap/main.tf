@@ -1,10 +1,11 @@
 # =============================================================================
 # GenSprint Labs — landing page: bootstrap (role OIDC do GitHub Actions)
 # =============================================================================
-# Única infraestrutura administrada por este repositório hoje. O bucket do site
-# (gensprintlabs-frontend-production) e a distribuição CloudFront (E1KARJMUSXKRWK)
-# foram criados antes deste repositório ter Terraform e ainda não foram
-# importados: ver docs/adr/001-ci-cd-por-github-actions-oidc.md.
+# Administra a role de deploy do CI (oidc.tf) e a distribuição CloudFront com
+# os cabeçalhos de segurança (cloudfront.tf, importada em 2026-11-11). O bucket
+# do site (gensprintlabs-frontend-production), o OAC, o certificado e a function
+# de redirect foram criados antes deste repositório ter Terraform e seguem fora
+# dele: ver docs/adr/001-ci-cd-por-github-actions-oidc.md.
 #
 # Quem roda: o dono, com o perfil SSO `felipelageduarte` (admin). Nunca o CI:
 # a role de deploy não pode editar a própria policy.
@@ -13,6 +14,7 @@
 #   terraform -chdir=infra/bootstrap plan
 #   terraform -chdir=infra/bootstrap apply -target=aws_iam_role.deploy \
 #     -target=aws_iam_role_policy.deploy
+#   (distribuição e cabeçalhos: alvos no topo de cloudfront.tf)
 # =============================================================================
 
 terraform {

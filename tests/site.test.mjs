@@ -180,3 +180,21 @@ test('página 404: mesma CSP, fora do índice, sem inline e sem referência queb
   }
   for (const a of nf.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)) assert.match(a[0], /rel="noopener"/);
 });
+
+test('CSP do cabeçalho (Terraform) é a da meta tag mais frame-ancestors', () => {
+  const tf = fs.readFileSync(path.join(ROOT, 'infra/bootstrap/cloudfront.tf'), 'utf8');
+  const block = tf.match(/content_security_policy = join\("; ", \[([\s\S]*?)\]\)/)[1];
+  const header = [...block.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  const meta = html.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)[1].split('; ');
+  assert.deepEqual(header, [...meta, "frame-ancestors 'none'"]);
+});
+
+test('erro 403 e 404 do CloudFront viram 404 com a página do site', () => {
+  const tf = fs.readFileSync(path.join(ROOT, 'infra/bootstrap/cloudfront.tf'), 'utf8');
+  const blocks = [...tf.matchAll(/custom_error_response \{([\s\S]*?)\}/g)].map((m) => m[1]);
+  assert.equal(blocks.length, 2);
+  for (const b of blocks) {
+    assert.match(b, /response_code\s+= 404/);
+    assert.match(b, /response_page_path\s+= "\/404\.html"/);
+  }
+});
