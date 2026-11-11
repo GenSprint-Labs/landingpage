@@ -1,5 +1,5 @@
-# GenSprintLabs — robots.txt
-# https://gensprintlabs.com.br
+# GenSprint Labs — robots.txt
+# https://gensprint.com.br
 
 # Crawlers tradicionais
 User-agent: *
@@ -39,7 +39,7 @@ User-agent: cohere-ai
 Allow: /
 
 # Sitemap
-Sitemap: https://gensprintlabs.com.br/sitemap.xml
+Sitemap: https://gensprint.com.br/sitemap.xml
 
 # llms.txt (indexação para LLMs)
-# LLMs-txt: https://gensprintlabs.com.br/llms.txt
+# LLMs-txt: https://gensprint.com.br/llms.txt

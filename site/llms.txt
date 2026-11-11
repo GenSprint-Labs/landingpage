@@ -1,0 +1,54 @@
+# GenSprint Labs
+
+> Software house brasileira, em São Paulo, que moderniza sites antigos com a plataforma própria RefactorAI e constrói sites, plataformas web e SaaS legíveis por pessoas e por modelos de linguagem (ChatGPT, Claude, Gemini, Perplexity).
+
+## RefactorAI: modernização de sites com IA
+
+O RefactorAI é a plataforma da GenSprint Labs para refazer sites antigos. Funciona assim:
+
+1. Captura completa: baixa o site inteiro (páginas, estilos, scripts, imagens), inclusive sites montados com JavaScript.
+2. Diagnóstico em três frentes: segurança, acessibilidade (WCAG 2.1 AA) e SEO e desempenho, cada uma com nota de 0 a 100.
+3. Geração por IA: reconstrói o site com desenho atual e responsivo, preservando conteúdo, cores e logo.
+4. Preview e relatório: link para navegar no site novo e relatório técnico em PDF, com os problemas por gravidade.
+5. Ajustes até a aprovação. O código entregue é do cliente.
+
+A geração leva minutos. A entrega, com revisão humana e ajustes, leva dias.
+
+- Plataforma (acesso de clientes): https://refactorai.gensprint.com.br/
+
+## Outros serviços
+
+- Sites institucionais AI-Ready: Schema.org, llms.txt, SEO técnico e Core Web Vitals.
+- Plataformas web e sistemas: portais de clientes, sistemas internos, painéis, integrações com ERPs e APIs.
+- Plataformas SaaS: arquitetura serverless, cobrança recorrente, painel administrativo, IA integrada.
+- AI Retrofit: auditoria e implementação das camadas de visibilidade em IA num site existente, sem reconstruir do zero.
+
+## Projetos no ar
+
+- Brasimek (https://brasimek.com.br): site institucional para metalúrgica fundada em 1987.
+- Hipercrom (https://hipercrom.com.br): site institucional para empresa de cromagem e tratamento de superfícies industriais.
+- RefactorAI (https://refactorai.gensprint.com.br/): produto próprio, SaaS serverless na AWS com Claude via Amazon Bedrock.
+
+## Como trabalhamos
+
+- Diagnóstico gratuito: conversa de 30 minutos e proposta em até 48 horas.
+- Prazos: modernização de site em dias; site institucional novo em 3 a 6 semanas; sistemas e plataformas em 2 a 5 meses.
+- Sem aprisionamento: código, domínio e servidor são do cliente.
+- Atendimento em português, remoto, para todo o Brasil.
+
+## Contato
+
+- Site: https://gensprint.com.br/
+- E-mail: contato@gensprintlabs.com.br
+- WhatsApp: +55 (11) 96548-5574
+- Sede: São Paulo, SP, Brasil
+
+## Links
+
+- [Diagnóstico](https://gensprint.com.br/#diagnostico)
+- [Como funciona](https://gensprint.com.br/#como-funciona)
+- [RefactorAI](https://gensprint.com.br/#refactorai)
+- [Serviços](https://gensprint.com.br/#servicos)
+- [Projetos](https://gensprint.com.br/#projetos)
+- [Perguntas frequentes](https://gensprint.com.br/#faq)
+- [Contato](https://gensprint.com.br/#contato)

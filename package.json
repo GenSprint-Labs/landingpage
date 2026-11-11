@@ -1,0 +1,14 @@
+{
+  "name": "gensprint-landingpage",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Landing page da GenSprint Labs (site estático em S3 + CloudFront).",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "pretest": "node scripts/check-contrast.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "dev": "python3 -m http.server 4173 --bind 127.0.0.1 --directory site",
+    "og": "bash scripts/gen-og-image.sh"
+  }
+}

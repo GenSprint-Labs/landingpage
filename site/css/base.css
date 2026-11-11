@@ -1,0 +1,257 @@
+/* GenSprint Labs — base.css
+   Tokens, fontes locais, reset, tipografia, tema claro/escuro e acessibilidade global.
+   Espelha os tokens do RefactorAI (refactorai-platform/frontend/public/css/base.css, prefixo --ra-)
+   com prefixo --gs-: as duas marcas dividem papel, verdete, marca-texto e fontes.
+   Mudou lá, muda aqui. Detalhe em docs/design.md.
+   =========================================================================== */
+
+/* ----------------------------------------
+   FONTES LOCAIS (sem CDN) — licenças OFL em /fonts/LICENSE-*.txt
+   ---------------------------------------- */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('../fonts/bricolage-grotesque-latin-wght-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../fonts/instrument-sans-latin-wght-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2');
+}
+
+/* ----------------------------------------
+   TOKENS
+   Cada cor é um par light-dark(claro, escuro): uma definição, dois temas.
+   Tema: segue o sistema; <html data-theme="light|dark"> força (js/site.js persiste a escolha).
+   ---------------------------------------- */
+:root {
+  color-scheme: light dark;
+
+  /* Superfícies */
+  --gs-bg: light-dark(#f3f5f2, #0c1310);          /* fundo de página */
+  --gs-surface: light-dark(#ffffff, #141d19);     /* cards, sidebar, formulários */
+  --gs-surface-2: light-dark(#e9eee9, #1d2822);   /* hover, cabeçalho de tabela */
+  --gs-surface-3: light-dark(#dce3dc, #27342d);   /* terceiro nível, trilhas */
+  --gs-border: light-dark(#d3dbd3, #2b3a33);      /* divisores decorativos */
+  --gs-border-strong: light-dark(#6f7f76, #6f8279); /* bordas de campo (3:1 mínimo) */
+
+  /* Texto */
+  --gs-text: light-dark(#131e19, #e8f0eb);
+  --gs-text-secondary: light-dark(#43524a, #aebdb5);
+  --gs-text-muted: light-dark(#52625a, #93a59b);
+
+  /* Marca (verdete) */
+  --gs-accent: light-dark(#0b6b57, #3dd1aa);        /* CTA, link, foco */
+  --gs-accent-hover: light-dark(#08574a, #6fe0c0);
+  --gs-accent-light: light-dark(#0b6b57, #6fe0c0);  /* ícone/texto de destaque */
+  --gs-accent-bg: light-dark(#ddf1ea, #12332b);     /* fundo suave de seleção */
+  --gs-accent-glow: light-dark(rgba(11, 107, 87, 0.14), rgba(61, 209, 170, 0.18));
+  --gs-on-accent: light-dark(#ffffff, #05211a);     /* texto sobre --gs-accent */
+  --gs-marker: #f6c945;                              /* marca-texto: só decoração */
+  --gs-marker-ink: #2a2000;
+
+  /* Semânticos: cor sólida, fundo suave, texto sobre o fundo suave, texto sobre a sólida */
+  --gs-success: light-dark(#146c36, #4ade80);
+  --gs-success-bg: light-dark(#ddf3e4, #12301d);
+  --gs-success-text: light-dark(#14532d, #86efac);
+  --gs-on-success: light-dark(#ffffff, #04210f);
+  --gs-warning: light-dark(#a34a08, #fbbf24);
+  --gs-warning-bg: light-dark(#fcefd3, #35290c);
+  --gs-warning-text: light-dark(#7a3d06, #fcd34d);
+  --gs-on-warning: light-dark(#ffffff, #1f1500);
+  --gs-destructive: light-dark(#c0262d, #f87171);
+  --gs-destructive-bg: light-dark(#fbe6e6, #3a1618);
+  --gs-destructive-text: light-dark(#8f1d22, #fca5a5);
+  --gs-on-destructive: light-dark(#ffffff, #2a0709);
+  --gs-info: light-dark(#1d5fb8, #7db4f5);
+  --gs-info-bg: light-dark(#e0ecfb, #12273f);
+  --gs-info-text: light-dark(#174b91, #a9cdfa);
+  --gs-on-info: light-dark(#ffffff, #07182c);
+  --gs-violet: light-dark(#6b3fc2, #b79cf5);
+  --gs-violet-bg: light-dark(#ece4fa, #27193f);
+  --gs-violet-text: light-dark(#4f2a9c, #d2c0fa);
+
+  /* Camadas e sombras */
+  --gs-scrim: light-dark(rgba(10, 18, 14, 0.5), rgba(0, 0, 0, 0.65));
+  --gs-shadow-color: light-dark(rgba(19, 30, 25, 0.12), rgba(0, 0, 0, 0.5));
+  --gs-shadow-1: 0 1px 2px var(--gs-shadow-color);
+  --gs-shadow-2: 0 4px 12px var(--gs-shadow-color), 0 1px 2px var(--gs-shadow-color);
+  --gs-shadow-3: 0 16px 40px var(--gs-shadow-color), 0 2px 6px var(--gs-shadow-color);
+
+  /* Forma */
+  --gs-radius: 12px;
+  --gs-radius-sm: 8px;
+  --gs-radius-xs: 6px;
+  --gs-radius-full: 100px;
+
+  /* Espaçamento (escala 4/8/16/24/32/48/64) */
+  --gs-space-1: 4px;
+  --gs-space-2: 8px;
+  --gs-space-3: 16px;
+  --gs-space-4: 24px;
+  --gs-space-5: 32px;
+  --gs-space-6: 48px;
+  --gs-space-7: 64px;
+
+  /* Tipografia */
+  --gs-font-heading: 'Bricolage Grotesque', 'Instrument Sans', system-ui, sans-serif;
+  --gs-font-body: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --gs-font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --gs-fs-xs: 0.8rem;
+  --gs-fs-sm: 0.9rem;
+  --gs-fs-md: 1rem;
+  --gs-fs-lg: 1.2rem;
+  --gs-fs-xl: 1.5rem;
+  --gs-fs-2xl: 1.95rem;
+  --gs-fs-3xl: 2.6rem;
+
+  /* Motion */
+  --gs-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --gs-ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --gs-dur-fast: 120ms;
+  --gs-dur: 200ms;
+  --gs-dur-slow: 360ms;
+  --gs-transition: 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Camadas (z-index) */
+  --gs-z-sticky: 100;
+  --gs-z-sidebar: 200;
+  --gs-z-overlay: 300;
+  --gs-z-modal: 400;
+  --gs-z-toast: 500;
+  --gs-z-tooltip: 600;
+
+  /* Alvos de toque */
+  --gs-hit: 44px;
+}
+
+:root[data-theme='light'] { color-scheme: light; }
+:root[data-theme='dark'] { color-scheme: dark; }
+
+/* ----------------------------------------
+   RESET
+   ---------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--gs-font-body);
+  background: var(--gs-bg);
+  color: var(--gs-text);
+  line-height: 1.55;
+  font-size: var(--gs-fs-md);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+img, svg, video, canvas, iframe { max-width: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--gs-font-heading);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+h1 { font-size: var(--gs-fs-2xl); }
+h2 { font-size: var(--gs-fs-xl); }
+h3 { font-size: var(--gs-fs-lg); }
+h4 { font-size: var(--gs-fs-md); }
+p { text-wrap: pretty; }
+
+a { color: var(--gs-accent); text-underline-offset: 3px; }
+a:hover { color: var(--gs-accent-hover); }
+
+code, pre, kbd, samp { font-family: var(--gs-font-mono); font-size: 0.92em; }
+
+::selection { background: var(--gs-accent-glow); }
+
+/* ----------------------------------------
+   ACESSIBILIDADE
+   ---------------------------------------- */
+/* Pseudo-classe duplicada de propósito: especificidade (0,2,0) vence `.x:focus { outline: none }`
+   das telas; componentes que definem o próprio :focus-visible depois continuam valendo. */
+:focus-visible:focus-visible {
+  outline: 2px solid var(--gs-accent);
+  outline-offset: 2px;
+}
+
+.visually-hidden,
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip link: o primeiro foco da página */
+.skip-link {
+  position: fixed;
+  top: var(--gs-space-2);
+  left: var(--gs-space-2);
+  z-index: calc(var(--gs-z-toast) + 1);
+  padding: var(--gs-space-2) var(--gs-space-3);
+  background: var(--gs-accent);
+  color: var(--gs-on-accent);
+  border-radius: var(--gs-radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--gs-dur) var(--gs-ease);
+}
+.skip-link:focus { transform: translateY(0); color: var(--gs-on-accent); }
+
+/* ----------------------------------------
+   MOVIMENTO REDUZIDO (WCAG 2.3.3): sem transform, sem loop; fade curtíssimo permanece
+   ---------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  html { font-size: 15px; }
+}

@@ -1,0 +1,132 @@
+name: Deploy
+
+# Deploy de produção por GitHub Actions + OIDC (sem chave AWS de longa duração).
+# ADR: docs/adr/001-ci-cd-por-github-actions-oidc.md.
+#
+# Merge em `main` publica o site. O dispatch manual serve para republicar ou para um dry run
+# (`plan_only`). O caminho é o mesmo do terminal: infra/scripts/deploy.sh.
+#
+# ATIVAÇÃO: o job `deploy` só roda quando a variável de repositório AWS_DEPLOY_ROLE_ARN existe.
+# Ela aponta para a role criada por infra/bootstrap (aplicado à mão pelo dono). Sem a variável o
+# job é pulado, sem erro, e o deploy segue pelo terminal. Roteiro: README.md, seção "Ativar o
+# deploy pelo Actions".
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      plan_only:
+        description: 'Só mostra o que subiria (dry run), sem publicar'
+        type: boolean
+        default: false
+
+# Nenhum job ganha permissão por padrão; cada um declara a sua.
+permissions: {}
+
+# Um deploy por vez e sem cancelar o que está rodando.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Checagens
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+
+      - name: Checagens do site (contraste + testes)
+        run: npm test
+
+  deploy:
+    name: Deploy para produção
+    needs: test
+    if: ${{ vars.AWS_DEPLOY_ROLE_ARN != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    permissions:
+      id-token: write # OIDC
+      contents: read
+    env:
+      PLAN_ONLY: ${{ inputs.plan_only && 'true' || 'false' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # gitleaks varre o histórico completo
+          persist-credentials: false
+
+      # Segredo commitado nunca chega à AWS: o scan roda antes da credencial OIDC.
+      # Mesma versão e checksum de test.yml; atualizar os dois juntos.
+      - name: Instalar gitleaks (binário verificado por checksum)
+        run: |
+          set -euo pipefail
+          V=8.30.1
+          curl -sSfL -o "$RUNNER_TEMP/gitleaks.tgz" "https://github.com/gitleaks/gitleaks/releases/download/v${V}/gitleaks_${V}_linux_x64.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tgz" | sha256sum -c -
+          tar -C "$RUNNER_TEMP" -xzf "$RUNNER_TEMP/gitleaks.tgz" gitleaks
+
+      - name: gitleaks git (histórico completo)
+        run: '"$RUNNER_TEMP/gitleaks" git . --no-banner -v --redact --exit-code 1'
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Deploy (checagens, publicação por whitelist, invalidação, smoke)
+        run: |
+          if [ "$PLAN_ONLY" = "true" ]; then
+            bash infra/scripts/deploy.sh --plan-only
+          else
+            bash infra/scripts/deploy.sh
+          fi
+
+  # Falha em main abre issue (assim o erro não depende de alguém olhar a aba Actions).
+  incident:
+    name: Abrir issue de incidente
+    needs: [test, deploy]
+    if: ${{ always() && github.ref == 'refs/heads/main' && (needs.test.result == 'failure' || needs.deploy.result == 'failure') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - name: Abrir issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SHA: ${{ github.sha }}
+          TEST_RESULT: ${{ needs.test.result }}
+          DEPLOY_RESULT: ${{ needs.deploy.result }}
+        run: |
+          gh issue create \
+            --title "Deploy falhou em ${SHA:0:7}" \
+            --body "O workflow Deploy falhou em main.
+
+          - Commit: ${SHA}
+          - Run: ${RUN_URL}
+          - Checagens: ${TEST_RESULT}
+          - Deploy: ${DEPLOY_RESULT}
+
+          O site pode estar em estado parcial (arquivos publicados, smoke falho). Veja o log do job, abra https://gensprint.com.br/ e corrija na main ou reverta o commit."
