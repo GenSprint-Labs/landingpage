@@ -18,7 +18,9 @@ Até aqui o site era um `index.html` único publicado à mão por `deploy.sh`, c
 ## Consequências
 
 - Merge em `main` é deploy em produção. PR é o lugar de revisar.
-- O bucket e a distribuição CloudFront continuam fora do Terraform (criados antes). Pendências conhecidas, que exigem importar a distribuição:
-  - cabeçalhos de segurança por response headers policy (HSTS, `X-Content-Type-Options`, `frame-ancestors`); hoje a CSP vai por `<meta>`, que não cobre `frame-ancestors`;
-  - o erro 403 mapeado para `/index.html` com HTTP 200 faz todo caminho inexistente parecer válido; o correto para um site de uma página é 404.
+- **Atualização de 2026-11-11:** a distribuição CloudFront foi importada para `infra/bootstrap/cloudfront.tf` (import sem destruir nem recriar). Com isso saíram as duas pendências:
+  - cabeçalhos de segurança por response headers policy (HSTS de 1 ano sem `includeSubDomains`, porque `gensprint.com.br` tem subdomínios de outros projetos; `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` e a mesma CSP da meta tag mais `frame-ancestors 'none'`);
+  - o erro 403 (objeto ausente em bucket privado) e o 404 respondem HTTP 404 com `site/404.html`, no lugar de `/index.html` com HTTP 200.
+- A stack continua aplicada à mão pelo dono, com `-target`; a role do CI só publica arquivos e invalida o cache. O smoke do deploy confere os cabeçalhos e o 404.
+- Seguem fora do Terraform: bucket, OAC, certificado ACM e a function de redirect (entram por identificador).
 - O state do bootstrap divide bucket com o GenSprint Core; a chave é própria e o bucket é versionado.

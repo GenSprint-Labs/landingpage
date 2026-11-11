@@ -52,6 +52,18 @@ gh variable set AWS_DEPLOY_ROLE_ARN --repo GenSprint-Labs/landingpage --body "$(
 gh workflow run deploy.yml --repo GenSprint-Labs/landingpage
 ```
 
+## CloudFront: cabeçalhos de segurança e 404
+
+A distribuição vive em `infra/bootstrap/cloudfront.tf`: cabeçalhos de segurança (HSTS, `nosniff`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, CSP) e 404 de verdade com `site/404.html`. Mudou a CSP da meta tag, mude a do Terraform (o teste compara). Aplicar com o perfil do dono:
+
+```bash
+terraform -chdir=infra/bootstrap plan
+```
+
+```bash
+terraform -chdir=infra/bootstrap apply -target=aws_cloudfront_response_headers_policy.site -target=aws_cloudfront_distribution.site
+```
+
 ## Estrutura
 
 ```
@@ -66,7 +78,7 @@ site/                 tudo que vai para o ar (e só isso)
 scripts/              contraste, og-image
 tests/                checagens (node --test)
 infra/scripts/        deploy.sh
-infra/bootstrap/      role OIDC do GitHub Actions (Terraform)
+infra/bootstrap/      role OIDC do Actions, distribuição CloudFront e cabeçalhos de segurança (Terraform, aplicado à mão)
 docs/                 design.md, adr/
 ```
 

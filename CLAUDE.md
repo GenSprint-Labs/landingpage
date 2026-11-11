@@ -15,7 +15,7 @@ O trabalho da página: fazer o dono de um site antigo mandar a URL para um diagn
 ## Regras
 
 - **Tudo que vai para o ar mora em `site/`**, e só extensões da whitelist (`html css js svg png txt xml woff2`). Extensão nova exige linha em `infra/scripts/deploy.sh` e em `tests/site.test.mjs`.
-- **Sem dependência, sem build, sem CDN.** Fontes locais em `site/fonts/`. A CSP (meta no `index.html`) é `default-src 'self'`: nada de `<style>`, atributo `style`, handler inline ou script inline. JS mexe em estilo só por `element.style.setProperty` e classes.
+- **Sem dependência, sem build, sem CDN.** Fontes locais em `site/fonts/`. A CSP é `default-src 'self'`, em meta nos HTML e em cabeçalho no CloudFront (`infra/bootstrap/cloudfront.tf`; mudou uma, mude a outra, o teste compara): nada de `<style>`, atributo `style`, handler inline ou script inline. JS mexe em estilo só por `element.style.setProperty` e classes.
 - **Cor só por token** (`--gs-*` em `css/base.css`, tokens locais no `:root` de `css/site.css`). Par novo de texto e fundo entra em `scripts/check-contrast.mjs`.
 - **Tokens e fontes são espelho do RefactorAI** (`refactorai-platform/frontend/public/css/base.css`, prefixo `--ra-`). Mudou num, muda no outro. Detalhe em `docs/design.md`.
 - **Marca-texto amarelo** (`--gs-marker`) é a assinatura das duas marcas: aparece em `<mark>` de título, na barra do comparador e no traço do "R". Nunca como fundo de botão.
@@ -29,5 +29,5 @@ O trabalho da página: fazer o dono de um site antigo mandar a URL para um diagn
 ## Achados
 
 - **2026-11-10, projeto fora do ar e link morto na vitrine.** Causa: o site listava a Ploxo como "no ar" (desligada desde 2026-08-14) e apontava para `github.com/gensprintlabs` (404); nada conferia os links externos. Regra: projeto só entra em "Projetos no ar" com a URL respondendo 200, e link externo novo é conferido com `curl` antes do commit.
-- **2026-11-10, `og:image` apontava para arquivo que nunca existiu.** Causa: o CloudFront devolve `index.html` com HTTP 200 para qualquer caminho inexistente (erro 403 mapeado para `/index.html`), então o `curl` parecia saudável. Regra: smoke test confere o `content-type`, não só o status.
+- **2026-11-10, `og:image` apontava para arquivo que nunca existiu.** Causa: o CloudFront devolve `index.html` com HTTP 200 para qualquer caminho inexistente (erro 403 mapeado para `/index.html`), então o `curl` parecia saudável. Regra: smoke test confere o `content-type`, não só o status. Corrigido em 2026-11-11: caminho inexistente responde 404 com `site/404.html`, e o smoke confere.
 - **2026-11-10, canônico no domínio que redireciona.** Causa: `canonical`, sitemap e JSON-LD usavam `gensprintlabs.com.br`, que responde 301 para `gensprint.com.br`. Regra: o domínio canônico é `gensprint.com.br`; o teste barra o outro.

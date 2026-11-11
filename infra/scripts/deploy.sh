@@ -73,6 +73,24 @@ smoke() {
   smoke_status /robots.txt text/plain
   smoke_status /sitemap.xml application/xml
   smoke_status /llms.txt text/plain
+  smoke_status /404.html text/html
+
+  # Caminho inexistente tem de voltar 404 de verdade (e não a página inicial com 200).
+  local missing code
+  missing="${SITE_URL%/}/smoke-nao-existe-$(date +%s)"
+  code="$(curl -sS -o /dev/null -m 20 -w '%{http_code}' "$missing")" || error "SMOKE FALHOU: $missing não respondeu"
+  [[ "$code" == "404" ]] || error "SMOKE FALHOU: caminho inexistente respondeu HTTP $code (esperado 404)"
+  success "Smoke caminho inexistente (HTTP 404)"
+
+  # Cabeçalhos de segurança da response headers policy (infra/bootstrap/cloudfront.tf).
+  local headers h
+  headers="$(curl -sS -I -m 20 "${SITE_URL%/}/" | tr -d '\r' | tr '[:upper:]' '[:lower:]')" || error "SMOKE FALHOU: cabeçalhos não responderam"
+  for h in "strict-transport-security: max-age=" "x-content-type-options: nosniff" "x-frame-options: deny" \
+    "referrer-policy: strict-origin-when-cross-origin" "content-security-policy: default-src 'self'" "permissions-policy: "; do
+    grep -qF "$h" <<<"$headers" || error "SMOKE FALHOU: cabeçalho de segurança ausente ou diferente: $h"
+  done
+  grep -q "frame-ancestors 'none'" <<<"$headers" || error "SMOKE FALHOU: CSP sem frame-ancestors 'none'"
+  success "Smoke cabeçalhos de segurança (HSTS, nosniff, frame, referrer, CSP, permissions)"
 }
 
 if [[ "$SMOKE_ONLY" == true ]]; then
